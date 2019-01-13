@@ -1,0 +1,47 @@
+App\UristBundle\Entity\Document:
+    type: entity
+    repositoryClass: App\UristBundle\Repository\DocumentRepository
+    table: document
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            nullable: FALSE
+            unique: true
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    separator: _
+                    style: camel
+                    fields:
+                        - name
+        path:
+            type: string
+            length: 128
+            nullable: FALSE
+            unique: true
+    manyToMany:
+        category:
+            targetEntity: Category
+            inversedBy: document
+            joinTable:
+                name: documents_categories
+                joinColumns:
+                    document_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    lifecycleCallbacks:
+        prePersist: [preUpload]
+        preUpdate: [beforeUpdateAction]
+        postPersist: [upload]
+        postUpdate: [onUpdateAction]
+        postRemove: [removeUpload]

@@ -1,0 +1,66 @@
+App\UristBundle\Entity\Category:
+    type: entity
+    repositoryClass: App\UristBundle\Repository\CategoryRepository
+    table: category
+    gedmo:
+        tree:
+            type: nested
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        title:
+            type: string
+            length: 64
+            unique: true
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    separator: _
+                    style: camel
+                    fields:
+                        - title
+        lft:
+            type: integer
+            gedmo:
+                - treeLeft
+        rgt:
+            type: integer
+            gedmo:
+                - treeRight
+        lvl:
+            type: integer
+            gedmo:
+                - treeLevel
+    manyToOne:
+        root:
+            targetEntity: Category
+            joinColumn:
+                name: tree_root
+                referencedColumnName: id
+                onDelete: CASCADE
+        parent:
+            targetEntity: Category
+            inversedBy: children
+            joinColumn:
+                name: parent_id
+                referencedColumnName: id
+                onDelete: CASCADE
+            gedmo:
+                - treeParent
+    oneToMany:
+        children:
+            targetEntity: Category
+            mappedBy: parent
+            orderBy:
+                lft: ASC
+    manyToMany:
+        service:
+            targetEntity: Service
+            mappedBy: category
+        document:
+            targetEntity: Document
+            mappedBy: category

@@ -1,0 +1,22 @@
+App\UristBundle\Entity\Role:
+    type: entity
+    repositoryClass: App\UristBundle\Repository\RoleRepository
+    table: role
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            length: 20
+            nullable: TRUE
+            unique: true
+        description:
+            type: string
+            length: 50
+        created_at:
+            type: datetime
+            nullable: FALSE
+    lifecycleCallbacks:
+        prePersist: [setCreatedAtValue]

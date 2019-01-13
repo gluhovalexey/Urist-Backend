@@ -1,0 +1,37 @@
+App\UristBundle\Entity\Service:
+    type: entity
+    repositoryClass: App\UristBundle\Repository\ServiceRepository
+    table: service
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        title:
+            type: string
+            unique: true
+        price:
+            type: decimal
+        slug:
+            type: string
+            length: 128
+            gedmo:
+                slug:
+                    separator: _
+                    style: camel
+                    fields:
+                        - title
+    manyToMany:
+        category:
+            targetEntity: Category
+            inversedBy: service
+            joinTable:
+                name: services_categories
+                joinColumns:
+                    service_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

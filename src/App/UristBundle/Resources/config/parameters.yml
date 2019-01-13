@@ -1,0 +1,7 @@
+parameters:
+    # Настройки в рамках бандла
+    bundle.project_dir: '%kernel.project_dir%/src/App/UristBundle'
+    bundle.public_dir: '%bundle.project_dir%/Resources/public'
+    #Параметр для загрузки документов
+    document.upload_dir: '%bundle.public_dir%/docs'
+    document.asset_url:  '/bundles/appurist/docs/'

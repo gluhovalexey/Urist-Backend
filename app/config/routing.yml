@@ -1,0 +1,18 @@
+#app_urist:
+#    resource: "@AppUristBundle/Resources/config/routing.yml"
+#    prefix:   /
+
+NelmioApiDocBundle:
+ resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+ prefix:   /api/doc
+
+app:
+    resource: "@AppUristBundle/Controller"
+    type:     annotation
+    
+api_login_check:
+    path: /api/login_check
+
+public:
+    resource: "@AppUristBundle/Controller"
+    type:     annotation

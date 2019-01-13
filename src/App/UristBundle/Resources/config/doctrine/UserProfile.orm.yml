@@ -1,0 +1,42 @@
+App\UristBundle\Entity\UserProfile:
+    type: entity
+    repositoryClass: App\UristBundle\Repository\UserProfileRepository
+    table: user_profile
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        name:
+            type: string
+            length: 25
+            nullable: FALSE
+        middlename:
+            type: string
+            length: 25
+            nullable: TRUE
+        surname:
+            type: string
+            length: 25
+            nullable: FALSE
+        phone:
+            type: bigint
+            length: 13
+            nullable: FALSE
+        address:
+            type: string
+            length: 60
+            nullable: TRUE
+        updated_at:
+            type: datetime
+            nullable: FALSE
+    oneToOne:
+        user:
+            targetEntity: User
+            inversedBy: user_profile
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                onDelete: CASCADE
+    lifecycleCallbacks:
+        prePersist: [setUpdatedAtValue]

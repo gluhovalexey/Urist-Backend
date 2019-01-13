@@ -1,0 +1,49 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        App\UristBundle\Entity\User:
+            algorithm: bcrypt
+            cost: 12
+    providers:
+        user_provider:
+           entity:
+               class: AppUristBundle:User
+               property: username
+
+    firewalls:
+        # dev:
+        #     pattern: ^/(_(profiler|wds)|css|images|js)/
+        #     security: false
+        public:
+            pattern: ^/public
+            security: false
+
+        login:
+            pattern:  ^/api/login
+            stateless: true
+            anonymous: true
+            form_login:
+                check_path: /api/login_check
+                username_parameter: username
+                password_parameter: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+                require_previous_session: false
+
+        api:
+            pattern:   ^/api
+            stateless: true
+            provider: user_provider
+            guard:
+                authenticators:
+                    - lexik_jwt_authentication.jwt_token_authenticator
+        main:
+            anonymous: ~
+            form_login:
+                login_path: login
+                check_path: login
+
+    access_control:
+            - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+            - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
